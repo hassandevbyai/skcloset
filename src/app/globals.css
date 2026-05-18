@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-dm-sans, "DM Sans"), system-ui, sans-serif;
+  --font-serif: var(--font-playfair, "Playfair Display"), Georgia, serif;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+}
+
+:root {
+  --background: #f5f3ef;
+  --foreground: #171717;
+  --primary: #0a0a0a;
+  --primary-foreground: #fafafa;
+  --secondary: #e8e6e1;
+  --secondary-foreground: #1a1a1a;
+  --accent: #c9a84c;
+  --accent-foreground: #0a0a0a;
+  --muted: #e8e6e1;
+  --muted-foreground: #6b6b6b;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --border: #d4d2cd;
+  --ring: #c9a84c;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f0efea;
+  --primary: #f5f3ef;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1f1f1f;
+  --secondary-foreground: #f0efea;
+  --accent: #c9a84c;
+  --accent-foreground: #0a0a0a;
+  --muted: #1f1f1f;
+  --muted-foreground: #8b8b8b;
+  --card: #141414;
+  --card-foreground: #f0efea;
+  --border: #2a2a2a;
+  --ring: #c9a84c;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 3px;
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* ── Animations ── */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease forwards;
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-scroll-pulse {
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+
+/* ── Performance optimizations ── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-slide-up,
+  .animate-fade-in,
+  .animate-marquee,
+  .animate-scroll-pulse {
+    animation: none;
+  }
+}
+
+/* Lazy-load content below fold via content-visibility */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
+}
+
+/* ── Scroll Reveal ── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Hero Image Zoom ── */
+@keyframes hero-zoom {
+  from { transform: scale(1.1); }
+  to { transform: scale(1); }
+}
+
+.animate-hero-zoom {
+  animation: hero-zoom 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Toast Slide Up ── */
+@keyframes toast-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-toast {
+  animation: toast-slide-up 0.3s ease forwards;
+}
+
+/* ── Marquee pause on hover ── */
+.marquee-group:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* ── Button Ripple ── */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-ripple:active::after {
+  opacity: 1;
+}
