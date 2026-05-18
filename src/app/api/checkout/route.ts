@@ -2,7 +2,6 @@ import { NextRequest } from "next/server"
 import { createSupabaseServerClient } from "@/lib/supabase-server"
 import { createCheckoutSchema } from "@/lib/validators"
 import { badRequest, ok, serverError, generateOrderNumber } from "@/lib/api-utils"
-import { getStripe } from "@/lib/stripe"
 
 export async function POST(req: NextRequest) {
   try {
@@ -65,6 +64,7 @@ export async function POST(req: NextRequest) {
 
           let clientSecret: string | null = null
           if (paymentMethod === "stripe") {
+            const { getStripe } = await import("@/lib/stripe")
             const stripe = getStripe()
             if (!stripe) {
               return ok({

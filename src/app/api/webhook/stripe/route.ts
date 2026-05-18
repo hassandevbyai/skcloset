@@ -1,5 +1,4 @@
 import { NextRequest } from "next/server"
-import { getStripe } from "@/lib/stripe"
 import { createSupabaseServerClient } from "@/lib/supabase-server"
 import { serverError, corsHeaders } from "@/lib/api-utils"
 
@@ -23,6 +22,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const { getStripe } = await import("@/lib/stripe")
     const stripe = getStripe()
     if (!stripe) {
       return Response.json(
