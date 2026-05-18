@@ -2,7 +2,7 @@ import { NextRequest } from "next/server"
 import { createSupabaseServerClient } from "@/lib/supabase-server"
 import { createCheckoutSchema } from "@/lib/validators"
 import { badRequest, ok, serverError, generateOrderNumber } from "@/lib/api-utils"
-import { stripe } from "@/lib/stripe"
+import { getStripe } from "@/lib/stripe"
 
 export async function POST(req: NextRequest) {
   try {
@@ -65,6 +65,19 @@ export async function POST(req: NextRequest) {
 
           let clientSecret: string | null = null
           if (paymentMethod === "stripe") {
+            const stripe = getStripe()
+            if (!stripe) {
+              return ok({
+                order: {
+                  id: order.id,
+                  orderNumber: order.order_number,
+                  totalAmount,
+                  paymentMethod,
+                },
+                clientSecret: null,
+                message: "Stripe is not configured",
+              })
+            }
             const paymentIntent = await stripe.paymentIntents.create({
               amount: Math.round(totalAmount * 100),
               currency: "usd",

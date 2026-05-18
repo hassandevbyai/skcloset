@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server"
-import { stripe } from "@/lib/stripe"
+import { getStripe } from "@/lib/stripe"
 import { createSupabaseServerClient } from "@/lib/supabase-server"
 import { serverError, corsHeaders } from "@/lib/api-utils"
 
@@ -19,6 +19,14 @@ export async function POST(req: NextRequest) {
     if (!webhookSecret) {
       return Response.json(
         { success: false, error: "Webhook secret not configured" },
+        { status: 500 }
+      )
+    }
+
+    const stripe = getStripe()
+    if (!stripe) {
+      return Response.json(
+        { success: false, error: "Stripe not configured" },
         { status: 500 }
       )
     }
