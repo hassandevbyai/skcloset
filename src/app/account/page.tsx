@@ -103,8 +103,8 @@ function AccountPageContent() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        <div className="border-b border-border mb-8">
-          <div className="flex gap-8">
+        <div className="border-b border-border mb-8 overflow-x-auto">
+          <div className="flex gap-8 min-w-max md:min-w-0">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
@@ -315,7 +315,7 @@ function AccountPageContent() {
                   className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
                 />
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">City</label>
                   <input

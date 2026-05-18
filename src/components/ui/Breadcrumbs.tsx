@@ -7,17 +7,17 @@ interface BreadcrumbItem {
 
 export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-muted-foreground">
+    <nav aria-label="Breadcrumb" className="mb-6 overflow-hidden">
+      <ol className="flex flex-wrap items-center gap-2 text-xs tracking-[0.1em] uppercase text-muted-foreground">
         {items.map((item, i) => (
-          <li key={i} className="flex items-center gap-2">
-            {i > 0 && <span>/</span>}
+          <li key={i} className="flex items-center gap-2 min-w-0">
+            {i > 0 && <span className="shrink-0">/</span>}
             {item.href ? (
-              <Link href={item.href} className="hover:text-foreground transition-colors">
+              <Link href={item.href} className="hover:text-foreground transition-colors truncate">
                 {item.label}
               </Link>
             ) : (
-              <span className="text-foreground font-medium">{item.label}</span>
+              <span className="text-foreground font-medium truncate">{item.label}</span>
             )}
           </li>
         ))}

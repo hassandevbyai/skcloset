@@ -76,7 +76,7 @@ export function FeaturedProductCard({ name, brand, price, image }: FeaturedProdu
         >
           <HeartIcon className={`w-4 h-4 transition-colors ${wishlisted ? "text-accent fill-accent" : "text-foreground"}`} />
         </button>
-        <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+        <div className="absolute bottom-4 left-4 right-4 opacity-80 sm:opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
           <button
             onClick={handleQuickAdd}
             className="block w-full text-center py-2.5 bg-white/90 backdrop-blur-sm text-black text-[10px] tracking-[0.2em] uppercase font-medium"

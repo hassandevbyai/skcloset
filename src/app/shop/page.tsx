@@ -62,7 +62,7 @@ function ShopWishlistButton({ slug }: { slug: string }) {
   return (
     <button
       onClick={handleClick}
-      className="absolute top-3 right-3 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      className="absolute top-3 right-3 p-1.5 opacity-70 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300"
       aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
     >
       <HeartIcon className={`w-4 h-4 ${wishlisted ? "text-accent fill-accent" : "text-foreground"}`} />

@@ -76,7 +76,7 @@ export default function CartPage() {
           <div className="space-y-6">
             {items.map((item, i) => (
               <div key={`${item.slug}-${item.size}-${item.color}`} className="flex gap-4 pb-6 border-b border-border">
-                <div className="relative w-24 h-32 sm:w-28 sm:h-36 bg-secondary shrink-0">
+                <div className="relative w-20 h-28 sm:w-24 sm:h-32 md:w-28 md:h-36 bg-secondary shrink-0">
                   <Image
                     src={item.image}
                     alt={item.name}

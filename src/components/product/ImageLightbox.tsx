@@ -70,7 +70,7 @@ export function ImageLightbox({ images, currentIndex, onClose, onPrev, onNext }:
         </>
       )}
 
-      <div className="relative w-full h-full max-w-4xl max-h-[90vh] m-8" onClick={(e) => e.stopPropagation()}>
+      <div className="relative w-full h-full max-w-4xl max-h-[90vh] m-2 sm:m-4 md:m-8" onClick={(e) => e.stopPropagation()}>
         <Image
           src={current.url}
           alt={current.alt_text}

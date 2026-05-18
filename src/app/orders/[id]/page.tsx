@@ -95,8 +95,8 @@ export default function OrderConfirmationPage() {
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         {/* Status timeline */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between">
+        <div className="mb-12 overflow-x-auto pb-2">
+          <div className="flex items-center justify-between min-w-[400px] sm:min-w-0">
             {statusSteps.map((step, i) => (
               <div key={step} className="flex items-center">
                 <div className="flex flex-col items-center">
@@ -110,7 +110,7 @@ export default function OrderConfirmationPage() {
                     {i <= currentStep ? "✓" : i + 1}
                   </div>
                   <span
-                    className={`text-[10px] tracking-[0.15em] uppercase mt-2 ${
+                    className={`text-[10px] tracking-[0.15em] uppercase mt-2 whitespace-nowrap ${
                       i <= currentStep ? "text-foreground font-medium" : "text-muted-foreground"
                     }`}
                   >
@@ -119,7 +119,7 @@ export default function OrderConfirmationPage() {
                 </div>
                 {i < statusSteps.length - 1 && (
                   <div
-                    className={`w-12 sm:w-20 md:w-32 h-px mx-2 ${
+                    className={`w-8 sm:w-16 md:w-32 h-px mx-1 sm:mx-2 ${
                       i < currentStep ? "bg-accent" : "bg-border"
                     }`}
                   />

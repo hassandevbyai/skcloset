@@ -343,30 +343,30 @@ export default function CheckoutPage() {
               <section>
                 <h2 className="font-serif text-xl text-foreground mb-6">Payment Method</h2>
                 <div className="space-y-3">
-                  <label className="flex items-center gap-3 p-4 border border-border cursor-pointer hover:border-accent transition-colors">
+                  <label className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 border border-border cursor-pointer hover:border-accent transition-colors">
                     <input
                       type="radio"
                       name="payment"
                       value="cod"
                       checked={paymentMethod === "cod"}
                       onChange={() => setPaymentMethod("cod")}
-                      className="accent-accent"
+                      className="accent-accent shrink-0"
                     />
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-sm font-medium text-foreground">Cash on Delivery</p>
                       <p className="text-xs text-muted-foreground">Pay when your order arrives</p>
                     </div>
                   </label>
-                  <label className="flex items-center gap-3 p-4 border border-border cursor-pointer hover:border-accent transition-colors">
+                  <label className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 border border-border cursor-pointer hover:border-accent transition-colors">
                     <input
                       type="radio"
                       name="payment"
                       value="stripe"
                       checked={paymentMethod === "stripe"}
                       onChange={() => setPaymentMethod("stripe")}
-                      className="accent-accent"
+                      className="accent-accent shrink-0"
                     />
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-sm font-medium text-foreground">Pay Online (Stripe)</p>
                       <p className="text-xs text-muted-foreground">Credit/Debit card via Stripe</p>
                     </div>
