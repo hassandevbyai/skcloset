@@ -3,7 +3,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer"
 import InvoicePDF from "./InvoicePDF"
 import { FileDown } from "lucide-react"
 
-export default function InvoiceDownloadButton({ order, storeName = "SKCLOSET" }: { order: any; storeName?: string }) {
+export default function InvoiceDownloadButton({ order, storeName = "SKCLOSET" }: { order: { id: string; items: unknown[]; createdAt: string; status?: string; paymentMethod?: string; subtotal?: number; shipping?: number; discount?: number; total?: number; shippingAddress?: Record<string, unknown>; email?: string }; storeName?: string }) {
   return (
     <PDFDownloadLink
       document={<InvoicePDF order={order} storeName={storeName} />}

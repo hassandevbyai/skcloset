@@ -46,20 +46,20 @@ function RegisterPageContent() {
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-[11px] tracking-[0.15em] uppercase text-accent font-medium mb-1.5">Full Name</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
+            <label htmlFor="fullName" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Full Name</label>
+            <input id="fullName" type="text" value={name} onChange={(e) => setName(e.target.value)} required className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
           </div>
           <div>
-            <label className="block text-[11px] tracking-[0.15em] uppercase text-accent font-medium mb-1.5">Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
+            <label htmlFor="regEmail" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Email</label>
+            <input id="regEmail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
           </div>
           <div>
-            <label className="block text-[11px] tracking-[0.15em] uppercase text-accent font-medium mb-1.5">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
+            <label htmlFor="regPassword" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Password</label>
+            <input id="regPassword" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
           </div>
           <div>
-            <label className="block text-[11px] tracking-[0.15em] uppercase text-accent font-medium mb-1.5">Confirm Password</label>
-            <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
+            <label htmlFor="confirmPassword" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Confirm Password</label>
+            <input id="confirmPassword" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
           </div>
           {error && <p className="text-xs text-red-500 bg-red-500/5 border border-red-500/20 p-3">{error}</p>}
           <button type="submit" disabled={loading} className="w-full bg-accent text-accent-foreground py-3 text-xs tracking-[0.2em] uppercase font-medium hover:bg-accent/90 transition-colors disabled:opacity-50">

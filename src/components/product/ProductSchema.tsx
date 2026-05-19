@@ -1,4 +1,6 @@
-export default function ProductSchema({ product }: { product: any }) {
+import type { LocalProduct } from "@/lib/local-data"
+
+export default function ProductSchema({ product }: { product: Pick<LocalProduct, "name" | "description" | "brand" | "base_price" | "is_active" | "images" | "variants"> }) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Product",

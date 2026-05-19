@@ -8,7 +8,6 @@ export interface ProductImage {
   display_order: number
   is_primary: boolean
   created_at?: string
-  [key: string]: unknown
 }
 
 export interface ProductVariant {
@@ -22,7 +21,6 @@ export interface ProductVariant {
   stock_quantity: number
   low_stock_threshold?: number
   is_default?: boolean
-  [key: string]: unknown
 }
 
 export interface ProductRecord {
@@ -44,7 +42,6 @@ export interface ProductRecord {
   primary_image?: ProductImage[]
   primaryImage?: ProductImage | null
   created_at?: string
-  [key: string]: unknown
 }
 
 export function getPrimaryImage(images?: ProductImage[]): ProductImage | null {

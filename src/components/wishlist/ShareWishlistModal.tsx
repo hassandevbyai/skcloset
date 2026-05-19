@@ -76,7 +76,7 @@ export default function ShareWishlistModal({ open, onClose }: Props) {
                 Sharing {wishlistSlugs.length} item{wishlistSlugs.length !== 1 ? "s" : ""}
               </p>
               <div className="space-y-1.5">
-                {previewItems.map((item: any) => (
+                {previewItems.map((item: { slug: string; name: string }) => (
                   <div key={item.slug} className="flex items-center gap-3 text-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
                     <span className="text-foreground truncate">{item.name}</span>

@@ -213,6 +213,7 @@ function InstagramSection() {
 }
 
 function NewsletterSection() {
+  const newsletterId = "newsletter-email"
   return (
     <section className="relative py-24 md:py-32 bg-primary overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/95 to-accent/5" />
@@ -222,7 +223,8 @@ function NewsletterSection() {
         <h2 className="font-serif text-4xl md:text-5xl text-primary-foreground mb-4 leading-tight">Stay in the know</h2>
         <p className="text-primary-foreground/40 text-sm mb-8">Sign up for early access to drops, exclusive content, and more.</p>
         <form action="/api/newsletter" method="POST" className="flex flex-col sm:flex-row gap-3">
-          <input type="email" name="email" placeholder="Email address" required className="flex-1 px-5 py-4 bg-white/5 border border-white/10 text-primary-foreground placeholder:text-primary-foreground/30 text-sm focus:outline-none focus:border-accent/50 transition-colors" />
+          <label htmlFor={newsletterId} className="sr-only">Email address</label>
+          <input id={newsletterId} type="email" name="email" placeholder="Email address" required className="flex-1 px-5 py-4 bg-white/5 border border-white/10 text-primary-foreground placeholder:text-primary-foreground/30 text-sm focus:outline-none focus:border-accent/50 transition-colors" />
           <button type="submit" className="px-8 py-4 bg-accent text-accent-foreground text-[10px] tracking-[0.25em] uppercase font-semibold hover:bg-accent/90 transition-colors whitespace-nowrap">Subscribe</button>
         </form>
       </div>

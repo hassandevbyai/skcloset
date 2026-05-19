@@ -163,7 +163,7 @@ export default function CheckoutPage() {
       showToast("Order placed successfully!", "success")
       router.push(`/orders/${order.id}`)
     } else {
-      alert("Stripe integration coming soon")
+      showToast("Online payment coming soon — use Cash on Delivery", "info")
     }
   }
 
@@ -193,7 +193,7 @@ export default function CheckoutPage() {
             <h1 className="font-serif text-3xl md:text-5xl text-foreground">Checkout</h1>
           </div>
         </div>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 text-center max-w-md mx-auto">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 text-center">
           <p className="text-sm text-muted-foreground mb-2">Sign in to complete your purchase</p>
           <p className="text-xs text-muted-foreground/60 mb-8">Your cart items will be saved for later.</p>
           <Link
@@ -250,91 +250,43 @@ export default function CheckoutPage() {
                 <h2 className="font-serif text-xl text-foreground mb-6">Shipping Information</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">First Name</label>
-                    <input
-                      type="text"
-                      value={form.firstName}
-                      onChange={(e) => updateField("firstName", e.target.value)}
-                      className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.firstName ? "border-red-500" : "border-border"}`}
-                      required
-                    />
+                    <label htmlFor="firstName" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">First Name</label>
+                    <input id="firstName" type="text" value={form.firstName} onChange={(e) => updateField("firstName", e.target.value)} className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.firstName ? "border-red-500" : "border-border"}`} required />
                     {errors.firstName && <p className="text-[10px] text-red-500 mt-1">{errors.firstName}</p>}
                   </div>
                   <div>
-                    <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Last Name</label>
-                    <input
-                      type="text"
-                      value={form.lastName}
-                      onChange={(e) => updateField("lastName", e.target.value)}
-                      className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.lastName ? "border-red-500" : "border-border"}`}
-                      required
-                    />
+                    <label htmlFor="lastName" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Last Name</label>
+                    <input id="lastName" type="text" value={form.lastName} onChange={(e) => updateField("lastName", e.target.value)} className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.lastName ? "border-red-500" : "border-border"}`} required />
                     {errors.lastName && <p className="text-[10px] text-red-500 mt-1">{errors.lastName}</p>}
                   </div>
                   <div>
-                    <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Email</label>
-                    <input
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => updateField("email", e.target.value)}
-                      className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.email ? "border-red-500" : "border-border"}`}
-                      required
-                    />
+                    <label htmlFor="email" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Email</label>
+                    <input id="email" type="email" value={form.email} onChange={(e) => updateField("email", e.target.value)} className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.email ? "border-red-500" : "border-border"}`} required />
                     {errors.email && <p className="text-[10px] text-red-500 mt-1">{errors.email}</p>}
                   </div>
                   <div>
-                    <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Phone</label>
-                    <input
-                      type="tel"
-                      value={form.phone}
-                      onChange={(e) => updateField("phone", e.target.value)}
-                      className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.phone ? "border-red-500" : "border-border"}`}
-                      required
-                    />
+                    <label htmlFor="phone" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Phone</label>
+                    <input id="phone" type="tel" value={form.phone} onChange={(e) => updateField("phone", e.target.value)} className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.phone ? "border-red-500" : "border-border"}`} required />
                     {errors.phone && <p className="text-[10px] text-red-500 mt-1">{errors.phone}</p>}
                   </div>
                   <div className="sm:col-span-2">
-                    <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Address</label>
-                    <input
-                      type="text"
-                      value={form.address}
-                      onChange={(e) => updateField("address", e.target.value)}
-                      className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.address ? "border-red-500" : "border-border"}`}
-                      required
-                    />
+                    <label htmlFor="address" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Address</label>
+                    <input id="address" type="text" value={form.address} onChange={(e) => updateField("address", e.target.value)} className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.address ? "border-red-500" : "border-border"}`} required />
                     {errors.address && <p className="text-[10px] text-red-500 mt-1">{errors.address}</p>}
                   </div>
                   <div>
-                    <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">City</label>
-                    <input
-                      type="text"
-                      value={form.city}
-                      onChange={(e) => updateField("city", e.target.value)}
-                      className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.city ? "border-red-500" : "border-border"}`}
-                      required
-                    />
+                    <label htmlFor="city" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">City</label>
+                    <input id="city" type="text" value={form.city} onChange={(e) => updateField("city", e.target.value)} className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.city ? "border-red-500" : "border-border"}`} required />
                     {errors.city && <p className="text-[10px] text-red-500 mt-1">{errors.city}</p>}
                   </div>
                   <div>
-                    <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">State</label>
-                    <input
-                      type="text"
-                      value={form.state}
-                      onChange={(e) => updateField("state", e.target.value)}
-                      className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.state ? "border-red-500" : "border-border"}`}
-                      required
-                    />
+                    <label htmlFor="state" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">State</label>
+                    <input id="state" type="text" value={form.state} onChange={(e) => updateField("state", e.target.value)} className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.state ? "border-red-500" : "border-border"}`} required />
                     {errors.state && <p className="text-[10px] text-red-500 mt-1">{errors.state}</p>}
                   </div>
                   <div>
-                    <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">ZIP Code</label>
-                    <input
-                      type="text"
-                      value={form.zip}
-                      onChange={(e) => updateField("zip", e.target.value)}
-                      className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.zip ? "border-red-500" : "border-border"}`}
-                      required
-                    />
+                    <label htmlFor="zip" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">ZIP Code</label>
+                    <input id="zip" type="text" value={form.zip} onChange={(e) => updateField("zip", e.target.value)} className={`w-full px-4 py-2.5 bg-transparent border text-sm text-foreground focus:outline-none focus:border-accent transition-colors ${errors.zip ? "border-red-500" : "border-border"}`} required />
                     {errors.zip && <p className="text-[10px] text-red-500 mt-1">{errors.zip}</p>}
                   </div>
                 </div>

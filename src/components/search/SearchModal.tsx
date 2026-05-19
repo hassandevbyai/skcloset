@@ -48,7 +48,9 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
         <div className="mx-auto max-w-3xl px-4 py-6">
           <div className="flex items-center gap-3 border-b border-border pb-4">
             <SearchIcon className="w-5 h-5 text-muted-foreground shrink-0" />
+            <label htmlFor="search-input" className="sr-only">Search products</label>
             <input
+              id="search-input"
               ref={inputRef}
               type="text"
               value={query}
@@ -78,13 +80,19 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                     className="flex items-center gap-4 p-3 hover:bg-secondary/50 rounded-sm transition-colors group"
                   >
                     <div className="relative w-14 h-14 bg-secondary shrink-0 overflow-hidden">
-                      <Image
-                        src={getProductImages(product.slug)?.[0] || ""}
-                        alt={product.name}
-                        fill
-                        sizes="56px"
-                        className="object-cover"
-                      />
+                      {getProductImages(product.slug)?.[0] ? (
+                        <Image
+                          src={getProductImages(product.slug)[0]}
+                          alt={product.name}
+                          fill
+                          sizes="56px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary to-muted">
+                          <span className="text-[8px] tracking-[0.1em] uppercase text-muted-foreground font-medium">{product.brand.slice(0, 2)}</span>
+                        </div>
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium">{product.brand}</p>

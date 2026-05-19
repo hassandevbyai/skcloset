@@ -30,6 +30,7 @@ export function ToastContainer() {
       {toasts.slice(0, 3).map((toast) => (
         <div
           key={toast.id}
+          role="alert"
           className={`pointer-events-auto flex items-start gap-3 p-4 bg-background border border-border shadow-lg animate-toast ${typeStyles[toast.type] || typeStyles.info}`}
         >
           <span className={`text-sm font-bold mt-0.5 ${

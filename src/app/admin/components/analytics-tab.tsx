@@ -55,7 +55,7 @@ export function AnalyticsTab() {
     name: statusLabels[s],
     value: data.filter((o) => o.status === s).length,
     color: (() => {
-      const colors: Record<string, string> = { pending: "#ca8a04", confirmed: "#16a34a", shipped: "#2563eb", delivered: "#d4a574", cancelled: "#dc2626" }
+      const colors: Record<string, string> = { pending: "#ca8a04", confirmed: "#16a34a", shipped: "#2563eb", delivered: "#c9a84c", cancelled: "#dc2626" }
       return colors[s]
     })(),
   }))
@@ -76,8 +76,8 @@ export function AnalyticsTab() {
             <LineChart data={revenueTrend}>
               <defs>
                 <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#d4a574" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#d4a574" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#c9a84c" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#c9a84c" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -87,7 +87,7 @@ export function AnalyticsTab() {
                 contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "4px", fontSize: "12px" }}
                 labelStyle={{ color: "hsl(var(--foreground))" }}
               />
-              <Line type="monotone" dataKey="revenue" stroke="#d4a574" strokeWidth={2} dot={{ fill: "#d4a574", r: 4 }} activeDot={{ r: 6 }} fillOpacity={1} fill="url(#revenueGradient)" />
+              <Line type="monotone" dataKey="revenue" stroke="#c9a84c" strokeWidth={2} dot={{ fill: "#c9a84c", r: 4 }} activeDot={{ r: 6 }} fillOpacity={1} fill="url(#revenueGradient)" />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -107,7 +107,7 @@ export function AnalyticsTab() {
                     contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "4px", fontSize: "12px" }}
                     labelStyle={{ color: "hsl(var(--foreground))" }}
                   />
-                  <Bar dataKey="quantity" fill="#d4a574" radius={[0, 3, 3, 0]} barSize={20} />
+                  <Bar dataKey="quantity" fill="#c9a84c" radius={[0, 3, 3, 0]} barSize={20} />
                 </BarChart>
               </ResponsiveContainer>
             )}

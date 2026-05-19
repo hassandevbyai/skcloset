@@ -56,7 +56,38 @@ export default function OrderConfirmationPage() {
   }, [id, authChecked, router])
 
   if (!mounted || !authChecked) {
-    return <div className="min-h-screen" />
+    return (
+      <div className="min-h-screen">
+        <div className="border-b border-border bg-secondary/30">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <div className="h-4 bg-secondary/50 rounded w-16 mb-2 animate-pulse" />
+            <div className="h-10 bg-secondary/50 rounded w-48 animate-pulse" />
+          </div>
+        </div>
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12 space-y-8 animate-pulse">
+          <div className="flex items-center justify-between">
+            {[1,2,3,4].map((i) => (
+              <div key={i} className="flex flex-col items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-secondary/50" />
+                <div className="h-3 bg-secondary/50 rounded w-16" />
+              </div>
+            ))}
+          </div>
+          <div className="space-y-4">
+            {[1,2,3].map((i) => (
+              <div key={i} className="flex gap-4">
+                <div className="w-20 h-24 bg-secondary/50 rounded" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-3 bg-secondary/50 rounded w-24" />
+                  <div className="h-4 bg-secondary/50 rounded w-48" />
+                  <div className="h-3 bg-secondary/50 rounded w-32" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (!order) {

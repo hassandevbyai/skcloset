@@ -44,27 +44,9 @@ export async function POST(req: NextRequest) {
         },
       })
     } catch {
-      // Fallback: check admin@skcloset.com
-      if (email === "admin@skcloset.com" && password === "admin123") {
-        return ok({
-          user: {
-            id: "admin-mock-id",
-            email: "admin@skcloset.com",
-            name: "Admin",
-            role: "admin",
-          },
-        })
-      }
-      if (email === "user@skcloset.com" && password === "user123") {
-        return ok({
-          user: {
-            id: "user-mock-id",
-            email: "user@skcloset.com",
-            name: "Test User",
-            role: "user",
-          },
-        })
-      }
+      // Fallback credentials removed for security.
+      // In local development without Supabase, use the client-side auth-store
+      // which reads from localStorage.
       return badRequest("Invalid email or password")
     }
   } catch (error) {

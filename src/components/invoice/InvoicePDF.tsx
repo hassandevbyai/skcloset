@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   invoiceTitle: {
     fontSize: 24,
     fontWeight: 700,
-    color: "#d4a574",
+    color: "#c9a84c",
     letterSpacing: 2,
   },
   section: {
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default function InvoicePDF({ order, storeName = "SKCLOSET" }: { order: any; storeName?: string }) {
+export default function InvoicePDF({ order, storeName = "SKCLOSET" }: { order: { id: string; items: { name: string; price: number; quantity: number; color?: string; size?: string }[]; subtotal?: number; shipping?: number; discount?: number; total?: number; shippingAddress?: { firstName?: string; lastName?: string; fullName?: string; email?: string; phone?: string; address?: string; city?: string; state?: string; zip?: string }; email?: string; createdAt: string; status?: string; paymentMethod?: string }; storeName?: string }) {
   const subtotal = order.subtotal || order.items?.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0) || 0
   const shipping = order.shipping ?? 10
   const discount = order.discount || 0

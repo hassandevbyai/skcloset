@@ -6,10 +6,10 @@ import Link from "next/link"
 import { isAdmin, logout } from "@/lib/auth-store"
 
 const adminLinks = [
-  { href: "/admin", label: "Dashboard", icon: "◈" },
-  { href: "/admin/products", label: "Products", icon: "□" },
-  { href: "/admin/orders", label: "Orders", icon: "◉" },
-  { href: "/admin/users", label: "Users", icon: "◎" },
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/products", label: "Products" },
+  { href: "/admin/orders", label: "Orders" },
+  { href: "/admin/users", label: "Users" },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -44,11 +44,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-3 px-4 py-2.5 text-sm rounded-sm transition-colors ${
+              className={`flex items-center px-4 py-2.5 text-sm rounded-sm transition-colors ${
                 pathname === link.href ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
               }`}
             >
-              <span className="text-xs">{link.icon}</span>
               {link.label}
             </Link>
           ))}

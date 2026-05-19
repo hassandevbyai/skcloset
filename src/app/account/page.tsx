@@ -201,14 +201,20 @@ function AccountPageContent() {
                   <div key={product.slug} className="group">
                     <Link href={`/product/${product.slug}`}>
                       <div className="aspect-[3/4] bg-secondary overflow-hidden relative mb-3">
-                        <Image
-                          src={getProductImages(product.slug)?.[0] || ""}
-                          alt={`${product.brand} - ${product.name}`}
-                          fill
-                          sizes="(max-width: 640px) 50vw, 25vw"
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          loading="lazy"
-                        />
+                        {getProductImages(product.slug)?.[0] ? (
+                          <Image
+                            src={getProductImages(product.slug)[0]}
+                            alt={`${product.brand} - ${product.name}`}
+                            fill
+                            sizes="(max-width: 640px) 50vw, 25vw"
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary to-muted">
+                            <span className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground font-medium">{product.brand}</span>
+                          </div>
+                        )}
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
                       </div>
                     </Link>
@@ -269,79 +275,39 @@ function AccountPageContent() {
           <div className="max-w-lg">
             <form onSubmit={handleProfileSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">First Name</label>
-                  <input
-                    type="text"
-                    value={profile.firstName}
-                    onChange={(e) => updateProfileField("firstName", e.target.value)}
-                    className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Last Name</label>
-                  <input
-                    type="text"
-                    value={profile.lastName}
-                    onChange={(e) => updateProfileField("lastName", e.target.value)}
-                    className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
-                  />
-                </div>
+                  <div>
+                    <label htmlFor="profFirstName" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">First Name</label>
+                    <input id="profFirstName" type="text" value={profile.firstName} onChange={(e) => updateProfileField("firstName", e.target.value)} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
+                  </div>
+                  <div>
+                    <label htmlFor="profLastName" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Last Name</label>
+                    <input id="profLastName" type="text" value={profile.lastName} onChange={(e) => updateProfileField("lastName", e.target.value)} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
+                  </div>
               </div>
               <div>
-                <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Email</label>
-                <input
-                  type="email"
-                  value={profile.email}
-                  onChange={(e) => updateProfileField("email", e.target.value)}
-                  className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
-                />
+                <label htmlFor="profEmail" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Email</label>
+                <input id="profEmail" type="email" value={profile.email} onChange={(e) => updateProfileField("email", e.target.value)} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
               </div>
               <div>
-                <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Phone</label>
-                <input
-                  type="tel"
-                  value={profile.phone}
-                  onChange={(e) => updateProfileField("phone", e.target.value)}
-                  className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
-                />
+                <label htmlFor="profPhone" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Phone</label>
+                <input id="profPhone" type="tel" value={profile.phone} onChange={(e) => updateProfileField("phone", e.target.value)} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
               </div>
               <div>
-                <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Address</label>
-                <input
-                  type="text"
-                  value={profile.address}
-                  onChange={(e) => updateProfileField("address", e.target.value)}
-                  className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
-                />
+                <label htmlFor="profAddress" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Address</label>
+                <input id="profAddress" type="text" value={profile.address} onChange={(e) => updateProfileField("address", e.target.value)} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">City</label>
-                  <input
-                    type="text"
-                    value={profile.city}
-                    onChange={(e) => updateProfileField("city", e.target.value)}
-                    className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
-                  />
+                  <label htmlFor="profCity" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">City</label>
+                  <input id="profCity" type="text" value={profile.city} onChange={(e) => updateProfileField("city", e.target.value)} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">State</label>
-                  <input
-                    type="text"
-                    value={profile.state}
-                    onChange={(e) => updateProfileField("state", e.target.value)}
-                    className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
-                  />
+                  <label htmlFor="profState" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">State</label>
+                  <input id="profState" type="text" value={profile.state} onChange={(e) => updateProfileField("state", e.target.value)} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">ZIP</label>
-                  <input
-                    type="text"
-                    value={profile.zip}
-                    onChange={(e) => updateProfileField("zip", e.target.value)}
-                    className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors"
-                  />
+                  <label htmlFor="profZip" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">ZIP</label>
+                  <input id="profZip" type="text" value={profile.zip} onChange={(e) => updateProfileField("zip", e.target.value)} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
                 </div>
               </div>
               <div className="flex items-center gap-4 pt-2">

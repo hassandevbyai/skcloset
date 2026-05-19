@@ -19,7 +19,12 @@ interface StoredUser {
   role: "customer" | "admin"
 }
 
-// Simple hash for localStorage dev auth (NOT production-grade)
+// WARNING: This is a trivial hash for LOCAL DEVELOPMENT ONLY.
+// It is NOT cryptographically secure and can be reversed trivially.
+// Before deploying to production:
+//   1. Delete this file entirely and use Supabase Auth exclusively.
+//   2. Never store passwords in localStorage.
+//   3. If a local fallback is absolutely required, use bcrypt or argon2.
 function hashPassword(password: string): string {
   let hash = 0
   for (let i = 0; i < password.length; i++) {
@@ -46,21 +51,29 @@ function saveUsers(users: StoredUser[]): void {
   }
 }
 
-// Seed default accounts if none exist
+// WARNING: Seed accounts use hardcoded credentials for local development only.
+// Before deploying to production, remove this function entirely and rely
+// exclusively on Supabase Auth (which is the primary auth mechanism).
+// The credentials below MUST be changed or moved to environment variables.
 function ensureSeedUsers(): void {
   const users = getUsers()
   if (users.length > 0) return
 
+  const adminEmail = process.env.NEXT_PUBLIC_SEED_ADMIN_EMAIL || "admin@skcloset.com"
+  const adminPassword = process.env.NEXT_PUBLIC_SEED_ADMIN_PASSWORD || "admin123"
+  const demoEmail = process.env.NEXT_PUBLIC_SEED_DEMO_EMAIL || "demo@skcloset.com"
+  const demoPassword = process.env.NEXT_PUBLIC_SEED_DEMO_PASSWORD || "demo123456"
+
   const seedUsers: StoredUser[] = [
     {
-      email: "admin@skcloset.com",
-      passwordHash: hashPassword("admin123"),
+      email: adminEmail,
+      passwordHash: hashPassword(adminPassword),
       name: "Admin",
       role: "admin",
     },
     {
-      email: "demo@skcloset.com",
-      passwordHash: hashPassword("demo123456"),
+      email: demoEmail,
+      passwordHash: hashPassword(demoPassword),
       name: "Demo",
       role: "customer",
     },
@@ -85,7 +98,7 @@ export function register(
   password: string,
   name: string
 ): { success: boolean; error?: string } {
-  if (!email.includes("@")) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return { success: false, error: "Please enter a valid email" }
   }
   if (password.length < 6) {
@@ -126,7 +139,7 @@ export function login(
 ): { success: boolean; user?: AuthUser; error?: string } {
   ensureSeedUsers()
 
-  if (!email.includes("@")) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return { success: false, error: "Please enter a valid email" }
   }
   if (password.length < 6) {

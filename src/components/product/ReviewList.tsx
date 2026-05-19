@@ -34,7 +34,7 @@ export function ReviewList({ productSlug }: ReviewListProps) {
               key={star}
               className={`w-4 h-4 ${
                 star <= Math.round(stats.average)
-                  ? "fill-[#d4a574] text-[#d4a574]"
+                  ? "fill-accent text-accent"
                   : "text-muted-foreground/30"
               }`}
             />
@@ -54,7 +54,7 @@ export function ReviewList({ productSlug }: ReviewListProps) {
                   key={star}
                   className={`w-3.5 h-3.5 ${
                     star <= review.rating
-                      ? "fill-[#d4a574] text-[#d4a574]"
+                      ? "fill-accent text-accent"
                       : "text-muted-foreground/20"
                   }`}
                 />

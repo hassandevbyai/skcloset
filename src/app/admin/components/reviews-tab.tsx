@@ -39,7 +39,7 @@ export function ReviewsTab() {
           <Star
             key={s}
             className={`w-3 h-3 ${
-              s <= rating ? "fill-[#d4a574] text-[#d4a574]" : "text-muted-foreground/30"
+              s <= rating ? "fill-accent text-accent" : "text-muted-foreground/30"
             }`}
           />
         ))}

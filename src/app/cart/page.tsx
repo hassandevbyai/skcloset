@@ -127,7 +127,7 @@ export default function CartPage() {
             ))}
             <div className="flex justify-between pt-2">
               <button
-                onClick={() => { clearCart(); refresh() }}
+                onClick={() => { if (window.confirm("Clear all items from your cart?")) { clearCart(); refresh() } }}
                 className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors"
               >
                 Clear Cart

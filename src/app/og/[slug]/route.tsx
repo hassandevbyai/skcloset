@@ -26,13 +26,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
           justifyContent: "space-between",
         }}
       >
-        <div style={{ display: "flex", fontSize: 24, letterSpacing: "0.3em", textTransform: "uppercase", color: "#d4a574" }}>
+        <div style={{ display: "flex", fontSize: 24, letterSpacing: "0.3em", textTransform: "uppercase", color: "#c9a84c" }}>
           SKCLOSET
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 64, fontWeight: 700, marginBottom: 16 }}>{product.name}</div>
           <div style={{ fontSize: 28, color: "#a0a0a0", marginBottom: 8 }}>{product.brand}</div>
-          <div style={{ fontSize: 36, color: "#d4a574" }}>${product.base_price?.toFixed(2)}</div>
+          <div style={{ fontSize: 36, color: "#c9a84c" }}>${product.base_price?.toFixed(2)}</div>
         </div>
       </div>
     ),

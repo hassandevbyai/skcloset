@@ -42,12 +42,12 @@ function LoginPageContent() {
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-[11px] tracking-[0.15em] uppercase text-accent font-medium mb-1.5">Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
+            <label htmlFor="email" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Email</label>
+            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
           </div>
           <div>
-            <label className="block text-[11px] tracking-[0.15em] uppercase text-accent font-medium mb-1.5">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
+            <label htmlFor="password" className="block text-[11px] tracking-[0.15em] uppercase text-muted-foreground font-medium mb-1.5">Password</label>
+            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="w-full px-4 py-2.5 bg-transparent border border-border text-sm text-foreground focus:outline-none focus:border-accent transition-colors" />
           </div>
           {error && <p className="text-xs text-red-500 bg-red-500/5 border border-red-500/20 p-3">{error}</p>}
           <button type="submit" disabled={loading} className="w-full bg-accent text-accent-foreground py-3 text-xs tracking-[0.2em] uppercase font-medium hover:bg-accent/90 transition-colors disabled:opacity-50">
@@ -55,6 +55,7 @@ function LoginPageContent() {
           </button>
         </form>
         <div className="mt-6 text-center space-y-2">
+          <Link href="/auth/forgot-password" className="block text-xs text-muted-foreground hover:text-foreground transition-colors">Forgot Password?</Link>
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
             <Link href="/auth/register" className="text-foreground hover:text-accent underline underline-offset-2 transition-colors">Register</Link>
