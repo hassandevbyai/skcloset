@@ -134,6 +134,34 @@ export const updateInventorySchema = z.object({
   lowStockThreshold: z.number().int().min(0).optional(),
 })
 
+// Email
+export const sendOrderConfirmationSchema = z.object({
+  email: z.string().email("Invalid email"),
+  order: z.object({
+    orderNumber: z.string(),
+    total: z.number(),
+    items: z.array(z.object({
+      name: z.string(),
+      quantity: z.number(),
+      price: z.number(),
+    })),
+  }),
+})
+
+export const sendPasswordResetSchema = z.object({
+  email: z.string().email("Invalid email"),
+  resetLink: z.string().url("Invalid reset link"),
+})
+
+export const sendAbandonedCartSchema = z.object({
+  email: z.string().email("Invalid email"),
+  items: z.array(z.object({
+    name: z.string(),
+    price: z.number(),
+    image: z.string().optional(),
+  })),
+})
+
 // API response helper types
 export type ApiResponse<T = unknown> = {
   success: boolean

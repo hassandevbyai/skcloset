@@ -72,6 +72,15 @@ export function ReviewList({ productSlug }: ReviewListProps) {
             </span>
           </div>
           <p className="text-sm text-muted-foreground leading-relaxed">{review.comment}</p>
+          {review.images && review.images.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-3">
+              {review.images.map((url, i) => (
+                <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="w-20 h-20 bg-secondary overflow-hidden block hover:opacity-80 transition-opacity">
+                  <img src={url} alt={`Review image ${i + 1}`} className="w-full h-full object-cover" />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       ))}
     </div>

@@ -4,6 +4,7 @@ import Script from "next/script"
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
 import { ToastContainer } from "@/components/ui/ToastContainer"
+import { LiveChat } from "@/components/chat/LiveChat"
 import "./globals.css"
 
 const dmSans = DM_Sans({
@@ -70,6 +71,7 @@ export default function RootLayout({
         <main className="flex-1 pt-16 md:pt-[72px]">{children}</main>
         <Footer />
         <ToastContainer />
+        <LiveChat />
       </body>
     </html>
   )

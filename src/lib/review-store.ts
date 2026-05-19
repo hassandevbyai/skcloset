@@ -6,6 +6,7 @@ export interface Review {
   userName: string
   rating: number
   comment: string
+  images?: string[]
   createdAt: string
   status: "pending" | "approved" | "rejected"
 }

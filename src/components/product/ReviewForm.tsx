@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Star } from "lucide-react"
+import { Star, X } from "lucide-react"
 import { addReview } from "@/lib/review-store"
 import { showToast } from "@/lib/toast-store"
 import { getUser } from "@/lib/auth-store"
@@ -17,7 +17,21 @@ export function ReviewForm({ productSlug, onSubmit }: ReviewFormProps) {
   const [hoveredRating, setHoveredRating] = useState(0)
   const [comment, setComment] = useState("")
   const [userName, setUserName] = useState(user?.name || "")
+  const [imageUrls, setImageUrls] = useState<string[]>([])
+  const [imageInput, setImageInput] = useState("")
   const [submitting, setSubmitting] = useState(false)
+
+  function handleAddImage() {
+    const url = imageInput.trim()
+    if (!url) return
+    if (!url.startsWith("http")) { showToast("Please enter a valid URL", "error"); return }
+    setImageUrls((prev) => [...prev, url])
+    setImageInput("")
+  }
+
+  function handleRemoveImage(url: string) {
+    setImageUrls((prev) => prev.filter((u) => u !== url))
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -26,10 +40,11 @@ export function ReviewForm({ productSlug, onSubmit }: ReviewFormProps) {
     if (!userName.trim()) { showToast("Please enter your name", "error"); return }
 
     setSubmitting(true)
-    addReview({ productSlug, userName: userName.trim(), rating, comment: comment.trim() })
+    addReview({ productSlug, userName: userName.trim(), rating, comment: comment.trim(), images: imageUrls.length > 0 ? imageUrls : undefined })
     setSubmitting(false)
     setRating(0)
     setComment("")
+    setImageUrls([])
     showToast("Review submitted for moderation")
     onSubmit?.()
   }
@@ -73,6 +88,42 @@ export function ReviewForm({ productSlug, onSubmit }: ReviewFormProps) {
           Your Review
         </label>
         <textarea id="reviewComment" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Share your thoughts about this product..." rows={4} className="w-full px-3 py-2.5 bg-transparent border border-border text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent transition-colors resize-none" />
+      </div>
+
+      <div>
+        <p className="text-xs tracking-[0.15em] uppercase text-muted-foreground mb-2">Review Images (optional)</p>
+        <div className="flex gap-2 mb-2">
+          <input
+            type="url"
+            value={imageInput}
+            onChange={(e) => setImageInput(e.target.value)}
+            placeholder="Paste image URL..."
+            className="flex-1 px-3 py-2.5 bg-transparent border border-border text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-accent transition-colors"
+          />
+          <button
+            type="button"
+            onClick={handleAddImage}
+            className="px-4 py-2.5 bg-secondary text-foreground text-xs tracking-[0.15em] uppercase font-medium hover:bg-secondary/80 transition-colors shrink-0"
+          >
+            Add
+          </button>
+        </div>
+        {imageUrls.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {imageUrls.map((url) => (
+              <div key={url} className="relative w-16 h-16 bg-secondary overflow-hidden group">
+                <img src={url} alt="" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(url)}
+                  className="absolute top-0 right-0 bg-black/60 text-white p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <button

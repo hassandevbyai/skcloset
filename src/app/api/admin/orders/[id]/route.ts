@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server"
 import { createSupabaseServerClient } from "@/lib/supabase-server"
-import { requireAdmin } from "@/lib/api-utils"
 import { badRequest, ok, serverError } from "@/lib/api-utils"
 import { updateOrderStatusSchema } from "@/lib/validators"
 
@@ -10,16 +9,19 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = await requireAdmin()
-    if (!user) {
-      return Response.json(
-        { success: false, error: "Admin access required" },
-        { status: 403 }
-      )
-    }
+    const supabase = await createSupabaseServerClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) return badRequest("Unauthorized")
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single()
+
+    if (profile?.role !== "admin") return badRequest("Forbidden")
 
     const { id } = await params
-    const supabase = await createSupabaseServerClient()
     const { data: order, error } = await supabase
       .from("orders")
       .select(
@@ -53,13 +55,17 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = await requireAdmin()
-    if (!user) {
-      return Response.json(
-        { success: false, error: "Admin access required" },
-        { status: 403 }
-      )
-    }
+    const supabase = await createSupabaseServerClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) return badRequest("Unauthorized")
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single()
+
+    if (profile?.role !== "admin") return badRequest("Forbidden")
 
     const { id } = await params
     const body = await req.json()
@@ -70,7 +76,6 @@ export async function PUT(
       return badRequest(Object.values(errors).flat().join(", "))
     }
 
-    const supabase = await createSupabaseServerClient()
     const { data, error } = await supabase
       .from("orders")
       .update({

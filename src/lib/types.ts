@@ -44,6 +44,15 @@ export interface ProductRecord {
   created_at?: string
 }
 
+export interface RestockNotification {
+  id: string
+  user_id: string
+  variant_id: string
+  email: string
+  notified: boolean
+  created_at: string
+}
+
 export function getPrimaryImage(images?: ProductImage[]): ProductImage | null {
   return images?.find((img) => img.is_primary) || images?.[0] || null
 }

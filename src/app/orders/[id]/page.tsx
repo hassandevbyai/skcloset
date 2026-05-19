@@ -8,20 +8,12 @@ import { useParams, useRouter } from "next/navigation"
 import { getUser } from "@/lib/auth-store"
 import { ChevronRight } from "@/components/layout/Icons"
 import { getOrderById, type Order } from "@/lib/order-store"
+import { OrderTimeline } from "@/components/orders"
 
 const InvoiceDownloadButton = dynamic(
   () => import("@/components/invoice/InvoiceDownloadButton"),
   { ssr: false }
 )
-
-const statusSteps = ["pending", "confirmed", "shipped", "delivered"]
-
-const statusLabels: Record<string, string> = {
-  pending: "Pending",
-  confirmed: "Confirmed",
-  shipped: "Shipped",
-  delivered: "Delivered",
-}
 
 export default function OrderConfirmationPage() {
   const params = useParams()
@@ -112,8 +104,6 @@ export default function OrderConfirmationPage() {
     )
   }
 
-  const currentStep = statusSteps.indexOf(order.status)
-
   return (
     <div className="min-h-screen">
       <div className="border-b border-border bg-secondary/30">
@@ -126,38 +116,8 @@ export default function OrderConfirmationPage() {
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         {/* Status timeline */}
-        <div className="mb-12 overflow-x-auto pb-2">
-          <div className="flex items-center justify-between min-w-[400px] sm:min-w-0">
-            {statusSteps.map((step, i) => (
-              <div key={step} className="flex items-center">
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
-                      i <= currentStep
-                        ? "bg-accent text-accent-foreground"
-                        : "bg-secondary text-muted-foreground"
-                    }`}
-                  >
-                    {i <= currentStep ? "✓" : i + 1}
-                  </div>
-                  <span
-                    className={`text-[10px] tracking-[0.15em] uppercase mt-2 whitespace-nowrap ${
-                      i <= currentStep ? "text-foreground font-medium" : "text-muted-foreground"
-                    }`}
-                  >
-                    {statusLabels[step]}
-                  </span>
-                </div>
-                {i < statusSteps.length - 1 && (
-                  <div
-                    className={`w-8 sm:w-16 md:w-32 h-px mx-1 sm:mx-2 ${
-                      i < currentStep ? "bg-accent" : "bg-border"
-                    }`}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
+        <div className="mb-10">
+          <OrderTimeline status={order.status} createdAt={order.createdAt} />
         </div>
 
         {/* Items */}

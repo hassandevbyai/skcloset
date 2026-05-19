@@ -5,11 +5,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { getUser } from "@/lib/auth-store"
-import { HeartIcon, XIcon, ChevronRight } from "@/components/layout/Icons"
+import { HeartIcon, XIcon, ChevronRight, BellIcon } from "@/components/layout/Icons"
 import { getUserOrders, type Order } from "@/lib/order-store"
 import { getWishlist, toggleWishlist } from "@/lib/wishlist-store"
 import { localProducts } from "@/lib/local-data"
 import { getProductImages } from "@/lib/product-images"
+import { showToast } from "@/lib/toast-store"
 import { getProfile, updateProfile, type UserProfile } from "@/lib/profile-store"
 import { getUserNotifications, markAsRead, markAllAsRead, type Notification } from "@/lib/notification-store"
 import ShareWishlistModal from "@/components/wishlist/ShareWishlistModal"
@@ -43,6 +44,9 @@ function AccountPageContent() {
   const [mounted, setMounted] = useState(false)
   const [showShare, setShowShare] = useState(false)
   const [authChecked, setAuthChecked] = useState(false)
+  const [notifySlug, setNotifySlug] = useState<string | null>(null)
+  const [notifyEmail, setNotifyEmail] = useState("")
+  const [subscribing, setSubscribing] = useState(false)
 
   useEffect(() => {
     if (!getUser()) {
@@ -88,6 +92,27 @@ function AccountPageContent() {
   const wishlistProducts = wishlistSlugs
     .map((slug) => localProducts.find((p) => p.slug === slug))
     .filter(Boolean) as typeof localProducts
+
+  function isOutOfStock(product: typeof localProducts[number]): boolean {
+    return product.variants.every((v) => v.stock_quantity <= 0)
+  }
+
+  async function handleStockNotify(slug: string, email: string) {
+    setSubscribing(true)
+    try {
+      await fetch("/api/user/restock-notifications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ variantId: slug, email }),
+      })
+      showToast("You'll be notified when this item is back in stock", "success")
+    } catch {
+      showToast("Failed to subscribe. Please try again.", "error")
+    } finally {
+      setSubscribing(false)
+      setNotifySlug(null)
+    }
+  }
 
   if (!mounted || !authChecked) {
     return <div className="min-h-screen" />
@@ -197,7 +222,9 @@ function AccountPageContent() {
                   </button>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                {wishlistProducts.map((product) => (
+                {wishlistProducts.map((product) => {
+                  const oos = isOutOfStock(product)
+                  return (
                   <div key={product.slug} className="group">
                     <Link href={`/product/${product.slug}`}>
                       <div className="aspect-[3/4] bg-secondary overflow-hidden relative mb-3">
@@ -216,6 +243,11 @@ function AccountPageContent() {
                           </div>
                         )}
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+                        {oos && (
+                          <div className="absolute top-2 left-2 bg-red-900/80 text-red-200 text-[9px] tracking-[0.1em] uppercase px-2 py-0.5 rounded-sm font-medium">
+                            Out of Stock
+                          </div>
+                        )}
                       </div>
                     </Link>
                     <div className="space-y-0.5">
@@ -223,15 +255,48 @@ function AccountPageContent() {
                       <h3 className="text-sm font-medium text-foreground">{product.name}</h3>
                       <p className="text-sm text-muted-foreground">${product.base_price.toFixed(2)}</p>
                     </div>
-                    <button
-                      onClick={() => handleRemoveWishlist(product.slug)}
-                      className="mt-2 text-[10px] tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-                    >
-                      <XIcon className="w-3 h-3" />
-                      Remove
-                    </button>
+                    <div className="flex items-center gap-2 mt-2">
+                      <button
+                        onClick={() => handleRemoveWishlist(product.slug)}
+                        className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                      >
+                        <XIcon className="w-3 h-3" />
+                        Remove
+                      </button>
+                      {oos && (
+                        <button
+                          onClick={() => { setNotifySlug(product.slug); setNotifyEmail(getUser()?.email || "") }}
+                          className="text-[10px] tracking-[0.15em] uppercase text-accent hover:text-accent/80 transition-colors flex items-center gap-1"
+                        >
+                          <BellIcon className="w-3 h-3" />
+                          Notify Me
+                        </button>
+                      )}
+                    </div>
+                    {notifySlug === product.slug && (
+                      <div className="mt-2 p-3 border border-border bg-secondary/30">
+                        <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground mb-2">Notify when in stock</p>
+                        <div className="flex gap-2">
+                          <input
+                            type="email"
+                            value={notifyEmail}
+                            onChange={(e) => setNotifyEmail(e.target.value)}
+                            placeholder="Your email"
+                            className="flex-1 px-2 py-1.5 bg-transparent border border-border text-xs text-foreground focus:outline-none focus:border-accent"
+                          />
+                          <button
+                            onClick={() => handleStockNotify(product.slug, notifyEmail)}
+                            disabled={subscribing || !notifyEmail}
+                            className="bg-accent text-accent-foreground px-3 py-1.5 text-[10px] tracking-[0.15em] uppercase font-medium hover:bg-accent/90 transition-colors disabled:opacity-50 shrink-0"
+                          >
+                            {subscribing ? "..." : "Subscribe"}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
             )}

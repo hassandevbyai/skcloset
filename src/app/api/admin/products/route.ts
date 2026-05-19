@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server"
 import { createSupabaseServerClient } from "@/lib/supabase-server"
-import { requireAdmin } from "@/lib/api-utils"
 import { badRequest, ok, serverError } from "@/lib/api-utils"
 import { createProductSchema } from "@/lib/validators"
 import { generateSlug } from "@/lib/api-utils"
@@ -8,13 +7,17 @@ import { generateSlug } from "@/lib/api-utils"
 // GET /api/admin/products
 export async function GET(req: NextRequest) {
   try {
-    const user = await requireAdmin()
-    if (!user) {
-      return Response.json(
-        { success: false, error: "Admin access required" },
-        { status: 403 }
-      )
-    }
+    const supabase = await createSupabaseServerClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) return badRequest("Unauthorized")
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single()
+
+    if (profile?.role !== "admin") return badRequest("Forbidden")
 
     const url = new URL(req.url)
     const page = Math.max(1, parseInt(url.searchParams.get("page") || "1", 10))
@@ -22,7 +25,6 @@ export async function GET(req: NextRequest) {
     const offset = (page - 1) * limit
     const includeInactive = url.searchParams.get("inactive") === "true"
 
-    const supabase = await createSupabaseServerClient()
     let query = supabase
       .from("products")
       .select("*", { count: "exact" })
@@ -51,13 +53,17 @@ export async function GET(req: NextRequest) {
 // POST /api/admin/products
 export async function POST(req: NextRequest) {
   try {
-    const user = await requireAdmin()
-    if (!user) {
-      return Response.json(
-        { success: false, error: "Admin access required" },
-        { status: 403 }
-      )
-    }
+    const supabase = await createSupabaseServerClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) return badRequest("Unauthorized")
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single()
+
+    if (profile?.role !== "admin") return badRequest("Forbidden")
 
     const body = await req.json()
     const parsed = createProductSchema.safeParse(body)
@@ -66,8 +72,6 @@ export async function POST(req: NextRequest) {
       const errors = parsed.error.flatten().fieldErrors
       return badRequest(Object.values(errors).flat().join(", "))
     }
-
-    const supabase = await createSupabaseServerClient()
 
     // Generate a unique slug
     let slug = generateSlug(parsed.data.name)

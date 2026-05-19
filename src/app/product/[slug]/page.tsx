@@ -9,6 +9,7 @@ import { isInWishlist, toggleWishlist } from "@/lib/wishlist-store"
 import { addToCart } from "@/lib/cart-store"
 import { getProductImages } from "@/lib/product-images"
 import { ImageLightbox } from "@/components/product/ImageLightbox"
+import SizeGuideModal from "@/components/product/SizeGuideModal"
 import { showToast } from "@/lib/toast-store"
 import ProductSchema from "@/components/product/ProductSchema"
 import Breadcrumbs from "@/components/ui/Breadcrumbs"
@@ -45,6 +46,7 @@ export default function ProductDetailPage() {
   const [wishlisted, setWishlisted] = useState(false)
   const [addedNotice, setAddedNotice] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false)
 
   useEffect(() => {
     setWishlisted(isInWishlist(slug))
@@ -152,9 +154,7 @@ export default function ProductDetailPage() {
       ? product.images.map((img) => img.url)
       : getProductImages(slug)?.length > 0
         ? getProductImages(slug)
-        : product.images?.length > 0
-          ? product.images.map((img) => img.url)
-          : []
+        : []
     : []
 
   if (loading) {
@@ -304,9 +304,9 @@ export default function ProductDetailPage() {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-xs tracking-[0.15em] uppercase text-foreground font-medium">Size</h3>
-                <Link href="/size-guide" className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2">
+                <button type="button" onClick={() => setSizeGuideOpen(true)} className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2">
                   Size Guide
-                </Link>
+                </button>
               </div>
               <div className="flex flex-wrap gap-2">
                 {sizes.map((size) => (
@@ -500,6 +500,11 @@ export default function ProductDetailPage() {
           onNext={() => setSelectedImage((selectedImage + 1) % allImages.length)}
         />
       )}
+      <SizeGuideModal
+        category={product.category}
+        isOpen={sizeGuideOpen}
+        onClose={() => setSizeGuideOpen(false)}
+      />
     </div>
   )
 }

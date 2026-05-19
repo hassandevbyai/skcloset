@@ -18,6 +18,7 @@ const navLinks = [
   { href: "/shop?category=jackets", label: "Jackets" },
   { href: "/shop?category=bottoms", label: "Bottoms" },
   { href: "/shop?category=footwear", label: "Footwear" },
+  { href: "/journal", label: "Journal" },
 ]
 
 export function Header() {

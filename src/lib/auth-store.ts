@@ -1,3 +1,8 @@
+// DEPRECATED — This file provides a localStorage-based auth fallback for local
+// development only. It is NOT secure and MUST be removed before deploying to
+// production. All production auth should use Supabase Auth exclusively.
+// See src/lib/supabase-server.ts and src/app/api/auth/ for the Supabase SSR flow.
+
 const STORAGE_KEY = "skcloset_auth"
 const USERS_KEY = "skcloset_users"
 

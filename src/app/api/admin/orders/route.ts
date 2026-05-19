@@ -1,24 +1,26 @@
 import { NextRequest } from "next/server"
 import { createSupabaseServerClient } from "@/lib/supabase-server"
-import { requireAdmin } from "@/lib/api-utils"
-import { ok, serverError, getPagination } from "@/lib/api-utils"
+import { ok, serverError, getPagination, badRequest } from "@/lib/api-utils"
 
 // GET /api/admin/orders
 export async function GET(req: NextRequest) {
   try {
-    const user = await requireAdmin()
-    if (!user) {
-      return Response.json(
-        { success: false, error: "Admin access required" },
-        { status: 403 }
-      )
-    }
+    const supabase = await createSupabaseServerClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) return badRequest("Unauthorized")
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single()
+
+    if (profile?.role !== "admin") return badRequest("Forbidden")
 
     const url = new URL(req.url)
     const { page, limit, offset } = getPagination(url.searchParams)
     const status = url.searchParams.get("status")
 
-    const supabase = await createSupabaseServerClient()
     let query = supabase
       .from("orders")
       .select(

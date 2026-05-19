@@ -16,7 +16,7 @@ const products = [
 
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-end bg-primary overflow-hidden">
+    <section className="relative flex items-end bg-primary overflow-hidden" style={{ minHeight: "100dvh" }}>
       <div className="absolute inset-0">
         <Image
           src="/images/hero.jpg"
@@ -28,23 +28,23 @@ function HeroSection() {
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-black/10" />
-      <div className="relative z-10 w-full pb-16 md:pb-20">
+      <div className="relative z-10 w-full pb-12 sm:pb-16 md:pb-20">
         <div className="mx-auto max-w-screen-2xl px-6 sm:px-8 lg:px-12">
-          <h1 className="font-sans text-white/90 text-[10px] md:text-[11px] tracking-[0.4em] uppercase font-medium mb-8 animate-fade-in">
+          <h1 className="font-sans text-white/90 text-[10px] md:text-[11px] tracking-[0.4em] uppercase font-medium mb-6 sm:mb-8 animate-fade-in">
             SKCLOSET
           </h1>
-          <div className="flex flex-wrap gap-4 animate-fade-in delay-200">
-            <Link href="/shop?category=new-arrivals" className="inline-flex items-center gap-3 bg-accent text-accent-foreground px-8 py-4 text-[11px] tracking-[0.25em] uppercase font-semibold hover:bg-accent/90 transition-all group">
+          <div className="flex flex-wrap gap-3 sm:gap-4 animate-fade-in delay-200">
+            <Link href="/shop?category=new-arrivals" className="inline-flex items-center gap-3 bg-accent text-accent-foreground px-6 sm:px-8 py-3 sm:py-4 text-[11px] tracking-[0.25em] uppercase font-semibold hover:bg-accent/90 transition-all group">
               Shop New In
               <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </Link>
-            <Link href="/shop" className="inline-flex items-center gap-3 border border-white/30 text-white px-8 py-4 text-[11px] tracking-[0.25em] uppercase font-medium hover:bg-white/10 transition-all">
+            <Link href="/shop" className="inline-flex items-center gap-3 border border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 text-[11px] tracking-[0.25em] uppercase font-medium hover:bg-white/10 transition-all">
               Explore
             </Link>
           </div>
         </div>
       </div>
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
+      <div className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
         <svg className="w-5 h-5 text-white/40 animate-bounce" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>

@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server"
-import { createSupabaseServerClient } from "@/lib/supabase-server"
+import { supabaseAdmin } from "@/lib/supabase-admin"
 import { serverError, corsHeaders } from "@/lib/api-utils"
 
 export async function POST(req: NextRequest) {
@@ -42,16 +42,13 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const supabase = await createSupabaseServerClient()
-
     switch (event.type) {
       case "payment_intent.succeeded": {
         const paymentIntent = event.data.object
         const orderId = paymentIntent.metadata.orderId
 
         if (orderId) {
-          // Update order payment status to paid
-          await supabase
+          await supabaseAdmin
             .from("orders")
             .update({
               payment_status: "paid",
@@ -59,6 +56,32 @@ export async function POST(req: NextRequest) {
               updated_at: new Date().toISOString(),
             })
             .eq("id", orderId)
+
+          // Send order confirmation email
+          const { data: order } = await supabaseAdmin
+            .from("orders")
+            .select("*, items:order_items(*), user:user_id(email)")
+            .eq("id", orderId)
+            .single()
+
+          if (order) {
+            const userEmail = order.user?.email || paymentIntent.receipt_email
+            if (userEmail) {
+              const { sendOrderConfirmation } = await import("@/lib/email")
+              await sendOrderConfirmation(userEmail, {
+                orderNumber: order.order_number,
+                items: (order.items || []).map((i: { product_name: string; quantity: number; unit_price: number }) => ({
+                  name: i.product_name,
+                  quantity: i.quantity,
+                  price: i.unit_price,
+                })),
+                total: order.total_amount,
+                shippingAddress: order.shipping_address
+                  ? `${order.shipping_address.firstName || ""} ${order.shipping_address.lastName || ""}\n${order.shipping_address.address || ""}\n${order.shipping_address.city || ""}, ${order.shipping_address.state || ""} ${order.shipping_address.zip || ""}`
+                  : undefined,
+              })
+            }
+          }
         }
         break
       }
@@ -68,10 +91,11 @@ export async function POST(req: NextRequest) {
         const orderId = paymentIntent.metadata.orderId
 
         if (orderId) {
-          await supabase
+          await supabaseAdmin
             .from("orders")
             .update({
               payment_status: "failed",
+              status: "cancelled",
               updated_at: new Date().toISOString(),
             })
             .eq("id", orderId)
@@ -84,14 +108,14 @@ export async function POST(req: NextRequest) {
         const paymentIntentId = charge.payment_intent as string
 
         if (paymentIntentId) {
-          const { data: order } = await supabase
+          const { data: order } = await supabaseAdmin
             .from("orders")
             .select("id")
             .eq("stripe_payment_intent_id", paymentIntentId)
             .single()
 
           if (order) {
-            await supabase
+            await supabaseAdmin
               .from("orders")
               .update({
                 payment_status: "refunded",

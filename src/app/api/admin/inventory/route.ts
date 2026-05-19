@@ -1,24 +1,26 @@
 import { NextRequest } from "next/server"
 import { createSupabaseServerClient } from "@/lib/supabase-server"
-import { requireAdmin } from "@/lib/api-utils"
 import { badRequest, ok, serverError, getPagination } from "@/lib/api-utils"
 
 // GET /api/admin/inventory
 export async function GET(req: NextRequest) {
   try {
-    const user = await requireAdmin()
-    if (!user) {
-      return Response.json(
-        { success: false, error: "Admin access required" },
-        { status: 403 }
-      )
-    }
+    const supabase = await createSupabaseServerClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) return badRequest("Unauthorized")
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single()
+
+    if (profile?.role !== "admin") return badRequest("Forbidden")
 
     const url = new URL(req.url)
     const { page, limit, offset } = getPagination(url.searchParams)
     const lowStockOnly = url.searchParams.get("lowStock") === "true"
 
-    const supabase = await createSupabaseServerClient()
     let query = supabase
       .from("product_variants")
       .select(
@@ -48,13 +50,17 @@ export async function GET(req: NextRequest) {
 // PUT /api/admin/inventory - Update variant stock
 export async function PUT(req: NextRequest) {
   try {
-    const user = await requireAdmin()
-    if (!user) {
-      return Response.json(
-        { success: false, error: "Admin access required" },
-        { status: 403 }
-      )
-    }
+    const supabase = await createSupabaseServerClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) return badRequest("Unauthorized")
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single()
+
+    if (profile?.role !== "admin") return badRequest("Forbidden")
 
     const body = await req.json()
     const { variantId, stockQuantity, lowStockThreshold } = body
@@ -63,7 +69,6 @@ export async function PUT(req: NextRequest) {
       return badRequest("variantId and stockQuantity are required")
     }
 
-    const supabase = await createSupabaseServerClient()
     const updateData: Record<string, number> = {
       stock_quantity: stockQuantity,
     }
